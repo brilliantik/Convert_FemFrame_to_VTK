@@ -1,0 +1,79 @@
+# trace generated using paraview version 5.11.0-RC2
+#import paraview
+#paraview.compatibility.major = 5
+#paraview.compatibility.minor = 11
+
+#### import the simple module from the paraview
+from paraview.simple import *
+#### disable automatic camera reset on 'Show'
+paraview.simple._DisableFirstRenderCameraReset()
+
+# Путь к файлу скважин
+path_well_info = r"C:\Stud\ST_LT\SL_ST_EXAMPLE\Ex2\result.wll"
+scale_radius = 10
+file_well_info = open(path_well_info, "r")
+well_info = file_well_info.readlines()
+file_well_info.close
+n_well = len(well_info)-1
+
+well_name=[well_info[i+1].split()[0] for i in range(n_well)]
+well_radius=[well_info[i+1].split()[2] for i in range(n_well)]
+well_x=[well_info[i+1].split()[3] for i in range(n_well)]
+well_y=[well_info[i+1].split()[4] for i in range(n_well)]
+well_press=[well_info[i+1].split()[6] for i in range(n_well)]
+well_rate=[well_info[i+1].split()[7] for i in range(n_well)]
+
+text1 = []
+text1Display = []
+wellDisplay = []
+wells_sphere = []
+# create a new 'Text'
+renderView1 = GetActiveViewOrCreate('RenderView')
+for i in range(n_well):
+	wells_sphere.append(Sphere(registrationName=well_name[i]))
+	wells_sphere[i].ThetaResolution = 50
+	wells_sphere[i].PhiResolution = 50
+	wells_sphere[i].Radius = float(well_radius[i]) * scale_radius
+	wells_sphere[i].Center = [float(well_x[i]), float(well_y[i]), 0.0]
+	wellDisplay.append(Show(wells_sphere[i], renderView1, 'GeometryRepresentation'))
+	wellDisplay[i].SpecularPower = 100.0
+	wellDisplay[i].Luminosity = 100.0
+	wellDisplay[i].Ambient = 1.0
+	wellDisplay[i].Diffuse = 1.0
+	if float(well_rate[i]) > 0.0:
+		wellDisplay[i].AmbientColor = [0.0, 0.0, 1.0]
+		wellDisplay[i].DiffuseColor = [0.0, 0.0, 1.0]
+	elif float(well_rate[i]) < 0.0:
+		wellDisplay[i].AmbientColor = [0.5859, 0.2929, 0.0]
+		wellDisplay[i].DiffuseColor = [0.5859, 0.2929, 0.0]
+	text1.append(Text(registrationName='label_' + well_name[i]))
+	text1[i].Text = well_name[i]
+	text1Display.append(Show(text1[i], renderView1, 'TextSourceRepresentation'))
+	# Properties modified on text1Display
+	text1Display[i].TextPropMode = 'Billboard 3D Text'
+
+	# Properties modified on text1Display
+	text1Display[i].FontFamily = 'Times'
+
+	# Properties modified on text1Display
+	text1Display[i].FontSize = 19
+
+	# Properties modified on text1Display
+	text1Display[i].Color = [0.0, 0.0, 0.0]
+
+	# Properties modified on text1Display
+	text1Display[i].Opacity = 1
+
+	# Properties modified on text1Display
+	text1Display[i].Bold = 1
+
+	# Properties modified on text1Display
+	text1Display[i].Italic = 0
+
+	# Properties modified on text1Display
+	text1Display[i].Shadow = 0
+
+	# Properties modified on text1Display
+	text1Display[i].BillboardPosition = [float(well_x[i]), float(well_y[i]), 0.0]
+	# toggle interactive widget visibility (only when running from the GUI)
+	HideInteractiveWidgets(proxy=text1Display[i])
