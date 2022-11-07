@@ -70,7 +70,8 @@ def save_vtk_3d(path_save, grid, data_p, data_u, data_s, data_hydro, data_h):
 		file.write(str(grid.vert[i][0]) + ' ' + str(grid.vert[i][1]) + ' ' + '0')
 		file.write('\n')
 	for i in range(grid.Nvert):
-		file.write(str(grid.vert[i][0]) + ' ' + str(grid.vert[i][1]) + ' ' + '-0.1')
+		# file.write(str(grid.vert[i][0]) + ' ' + str(grid.vert[i][1]) + ' ' + '-0.1')
+		file.write(str(grid.vert[i][0]) + ' ' + str(grid.vert[i][1]) + ' ' + str(-data_h[i]))
 		file.write('\n')
 	k = 0
 	for i in range(grid.Nelem):
