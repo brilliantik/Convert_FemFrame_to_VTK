@@ -9,7 +9,7 @@ from paraview.simple import *
 paraview.simple._DisableFirstRenderCameraReset()
 
 # Путь к файлу скважин
-path_well_info = r"C:\Stud\ST_LT\SL_ST_EXAMPLE\DIM-2\result.wll"
+path_well_info = r"C:\Stud\ST_LT\SL_ST_EXAMPLE\Ex2\result.wll"
 scale_radius = 10
 file_well_info = open(path_well_info, "r")
 well_info = file_well_info.readlines()
